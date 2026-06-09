@@ -104,27 +104,34 @@ input, select, textarea { font-family: inherit; }
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: var(--bg-deep);
+  background: #f4f8fa;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px;
   transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
 }
 #preloader.loaded {
   opacity: 0;
   visibility: hidden;
 }
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
 .loader-logo {
-  height: 64px;
+  height: 60px;
   width: auto;
+  filter: invert(1);
   animation: pulseLogo 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
 }
 .loader-line {
-  width: 140px;
-  height: 2px;
-  background: rgba(75,222,220,0.1);
+  width: 200px;
+  height: 3px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 4px;
   position: relative;
   overflow: hidden;
 }
@@ -133,16 +140,17 @@ input, select, textarea { font-family: inherit; }
   position: absolute;
   top: 0; left: 0; bottom: 0;
   width: 40%;
-  background: var(--primary);
-  animation: slideLine 1.5s ease-in-out infinite;
+  background: #05213F;
+  border-radius: 4px;
+  animation: slideLine 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 @keyframes slideLine {
   0% { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
+  100% { transform: translateX(250%); }
 }
 @keyframes pulseLogo {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(75,222,220,0.3)); transform: scale(1); opacity: 0.8; }
-  50% { filter: drop-shadow(0 0 25px rgba(75,222,220,0.7)); transform: scale(1.05); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.8; filter: invert(1) drop-shadow(0 0 10px rgba(0,0,0,0.1)); }
+  50% { transform: scale(1.05); opacity: 1; filter: invert(1) drop-shadow(0 0 20px rgba(0,0,0,0.2)); }
 }
 
 /* --- Container --- */
@@ -634,9 +642,9 @@ body.loaded .hero-right {
 }
 .hero-surfer {
   position: absolute;
-  bottom: -40px;
-  right: -40px;
-  width: clamp(400px, 40vw, 650px);
+  bottom: -90px;
+  right: -100px;
+  width: clamp(450px, 45vw, 750px);
   max-width: none;
   object-fit: contain;
   z-index: 5;
