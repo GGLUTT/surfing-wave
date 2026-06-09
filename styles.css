@@ -68,8 +68,8 @@ a, button, .carousel-stage, .board-item, .play-btn {
   width: 48px;
   pointer-events: none;
   z-index: 999999;
-  transform: translate(-20%, -20%);
-  transition: width 0.2s, transform 0.2s;
+  transform: translate(-10%, -10%);
+  transition: width 0.2s;
   will-change: left, top;
 }
 .custom-cursor.hovering {
@@ -79,6 +79,8 @@ a, button, .carousel-stage, .board-item, .play-btn {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+  transform: rotate(-35deg);
+  transform-origin: top left;
 }
 body::before {
   content: '';
