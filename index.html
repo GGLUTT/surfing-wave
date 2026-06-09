@@ -17,7 +17,7 @@
     <div class="preloader-bg preloader-bg-right"></div>
     <div class="loader-content">
       <img src="img/logo.png" alt="Loading" class="loader-logo" />
-      <div class="wave-loader"></div>
+      <div class="loader-line"></div>
     </div>
   </div>
 
@@ -52,34 +52,6 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-bg-glow" aria-hidden="true"></div>
-    
-    <!-- Floating Side Widget -->
-    <div class="conditions-card glass-card side-widget">
-      <div class="conditions-header">
-        <p class="label-small conditions-label">TODAY'S CONDITIONS</p>
-        <span class="conditions-quality">FAIR TO GOOD</span>
-      </div>
-      <div class="conditions-body">
-        <div class="conditions-main">
-          <span class="conditions-size">4&ndash;6 FT</span>
-          <div class="sparkline-wrap">
-            <svg class="cond-sparkline" viewBox="0 0 240 20" preserveAspectRatio="none">
-              <path d="M0,10 Q15,0 30,10 T60,10 T90,10 T120,10 T150,10 T180,10 T210,10 T240,10" fill="none" stroke="#4BDEDC" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
-        <div class="conditions-details">
-          <div class="cond-item">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v6M7 1L4 4M7 1l3 3" stroke="#4BDEDC" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="10" r="2" stroke="#4BDEDC" stroke-width="1.2"/></svg>
-            <span>Wind <strong>12 kts</strong></span>
-          </div>
-          <div class="cond-item">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2C5 2 3 4 3 6.5C3 9.5 5 12 7 12C9 12 11 9.5 11 6.5C11 4 9 2 7 2Z" stroke="#4BDEDC" stroke-width="1.2"/></svg>
-            <span>Water <strong>24&deg;C</strong></span>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="container hero-grid">
 
@@ -136,7 +108,32 @@
 
       <!-- Right -->
       <div class="hero-right">
-
+        <div class="conditions-card glass-card">
+          <div class="conditions-header">
+            <p class="label-small conditions-label">TODAY'S CONDITIONS</p>
+            <span class="conditions-quality">FAIR TO GOOD</span>
+          </div>
+          <div class="conditions-body">
+            <div class="conditions-main">
+              <span class="conditions-size">4&ndash;6 FT</span>
+              <div class="sparkline-wrap">
+                <svg class="cond-sparkline" viewBox="0 0 240 20" preserveAspectRatio="none">
+                  <path d="M0,10 Q15,0 30,10 T60,10 T90,10 T120,10 T150,10 T180,10 T210,10 T240,10" fill="none" stroke="#4BDEDC" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="conditions-details">
+              <div class="cond-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v6M7 1L4 4M7 1l3 3" stroke="#4BDEDC" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="10" r="2" stroke="#4BDEDC" stroke-width="1.2"/></svg>
+                <span>Wind <strong>12 kts</strong></span>
+              </div>
+              <div class="cond-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2C5 2 3 4 3 6.5C3 9.5 5 12 7 12C9 12 11 9.5 11 6.5C11 4 9 2 7 2Z" stroke="#4BDEDC" stroke-width="1.2"/></svg>
+                <span>Water <strong>24&deg;C</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
         <img src="img/1.png" alt="Surfer riding a wave" class="hero-surfer" id="hero-surfer" />
       </div>
     </div>
