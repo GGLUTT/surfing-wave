@@ -5,6 +5,20 @@
 (function () {
   'use strict';
 
+  // --- CUSTOM CURSOR ---
+  const cursor = document.getElementById('custom-cursor');
+  if (cursor) {
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    }, { passive: true });
+    
+    document.querySelectorAll('a, button, .carousel-stage, .board-item, .play-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+  }
+
   // --- PRELOADER & HERO ANIMATION ---
   window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');

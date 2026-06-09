@@ -55,12 +55,30 @@ body {
   color: var(--text-muted);
   background: var(--bg-deep);
   overflow-x: hidden;
-}
-html, body {
-  cursor: url('img/surf2.png') 0 0, auto;
+  cursor: none;
 }
 a, button, .carousel-stage, .board-item, .play-btn {
-  cursor: url('img/surf2.png') 0 0, pointer !important;
+  cursor: none !important;
+}
+
+/* Custom JS Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 48px;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-20%, -20%);
+  transition: width 0.2s, transform 0.2s;
+  will-change: left, top;
+}
+.custom-cursor.hovering {
+  width: 60px;
+}
+.custom-cursor img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
 }
 body::before {
   content: '';
@@ -570,7 +588,6 @@ body.loaded .hero-visual {
   opacity: 0.6;
   z-index: -1;
   pointer-events: none;
-  animation: splashPulse 6s ease-in-out infinite alternate;
 }
 @keyframes splashPulse {
   0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
