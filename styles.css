@@ -55,43 +55,9 @@ body {
   color: var(--text-muted);
   background: transparent;
   overflow-x: hidden;
-  cursor: none;
-}
-a, button, .carousel-stage, .board-item, .play-btn {
-  cursor: none !important;
 }
 
-/* Custom JS Cursor */
-.custom-cursor {
-  position: fixed;
-  top: 0; left: 0;
-  width: 48px;
-  pointer-events: none;
-  z-index: 999999;
-  transform: translate(-10%, -10%);
-  transition: width 0.2s;
-  will-change: left, top;
-}
-.custom-cursor.hovering {
-  width: 60px;
-}
-.custom-cursor img {
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-  transform: rotate(-35deg);
-  transform-origin: top left;
-}
-#bg-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  pointer-events: none;
-  transform: translateZ(0);
-}
+
 
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -612,6 +578,46 @@ body.light-theme .slice-mid {
   0% { transform: translateX(100%); opacity: 0; }
   50% { opacity: 1; }
   100% { transform: translateX(-100%); opacity: 0; }
+}
+
+/* ============================================================
+   GOOEY TEXT MORPHING
+   ============================================================ */
+.gooey-container {
+  position: relative;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+.gooey-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.gooey-texts {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.gooey-text {
+  position: absolute;
+  display: inline-block;
+  user-select: none;
+  text-align: center;
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(32px, 6vw, 64px);
+  color: var(--primary);
+  opacity: 0;
+  white-space: nowrap;
+}
+body.light-theme .gooey-text {
+  color: #2E909D;
 }
 
 /* Theme Switcher FlowGlass Pro */

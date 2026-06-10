@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="custom-cursor" id="custom-cursor">
-    <img src="img/surf2.png" alt="" />
-  </div>
+
 
   <!-- PRELOADER -->
   <div id="preloader">
@@ -107,7 +105,23 @@
       <!-- Shutter Text -->
       <div class="shutter-wrap" id="shutter-wrap">
         <!-- JS populates characters -->
-        <span class="sr-only">IMMERSE</span>
+        <span class="sr-only">SURFING</span>
+      </div>
+
+      <!-- Gooey Text Morphing -->
+      <div class="gooey-container">
+        <svg class="gooey-svg" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="threshold">
+              <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140" />
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="gooey-texts" style="filter: url(#threshold);">
+          <span id="gooey-text1" class="gooey-text"></span>
+          <span id="gooey-text2" class="gooey-text"></span>
+        </div>
       </div>
 
       <!-- Theme Switcher -->
