@@ -477,4 +477,74 @@
     });
   }
 
+  // Gooey Text Morphing Logic
+  const text1 = document.getElementById('gooey-text1');
+  const text2 = document.getElementById('gooey-text2');
+  
+  if (text1 && text2) {
+    const texts = ["IS", "NOT JUST", "A SPORT", "IT'S A", "LIFESTYLE"];
+    const morphTime = 1.2;
+    const cooldownTime = 0.5;
+
+    let textIndex = texts.length - 1;
+    let time = new Date();
+    let morph = 0;
+    let cooldown = cooldownTime;
+
+    text1.textContent = texts[textIndex % texts.length];
+    text2.textContent = texts[(textIndex + 1) % texts.length];
+
+    function setMorph(fraction) {
+      text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+      text2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+
+      fraction = 1 - fraction;
+      text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+      text1.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+    }
+
+    function doCooldown() {
+      morph = 0;
+      text2.style.filter = "";
+      text2.style.opacity = "100%";
+      text1.style.filter = "";
+      text1.style.opacity = "0%";
+    }
+
+    function doMorph() {
+      morph -= cooldown;
+      cooldown = 0;
+      let fraction = morph / morphTime;
+
+      if (fraction > 1) {
+        cooldown = cooldownTime;
+        fraction = 1;
+      }
+
+      setMorph(fraction);
+    }
+
+    function animateGooey() {
+      requestAnimationFrame(animateGooey);
+      let newTime = new Date();
+      let shouldIncrementIndex = cooldown > 0;
+      let dt = (newTime.getTime() - time.getTime()) / 1000;
+      time = newTime;
+
+      cooldown -= dt;
+
+      if (cooldown <= 0) {
+        if (shouldIncrementIndex) {
+          textIndex = (textIndex + 1) % texts.length;
+          text1.textContent = texts[textIndex % texts.length];
+          text2.textContent = texts[(textIndex + 1) % texts.length];
+        }
+        doMorph();
+      } else {
+        doCooldown();
+      }
+    }
+    animateGooey();
+  }
+
 })();
