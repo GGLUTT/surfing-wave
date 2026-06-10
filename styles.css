@@ -518,7 +518,7 @@ body.light-theme .hero-bg-grid {
 .shutter-char {
   position: relative;
   padding: 0 0.2vw;
-  font-size: clamp(60px, 15vw, 200px);
+  font-size: clamp(80px, 20vw, 280px);
   line-height: 1;
   font-weight: 900;
   font-family: 'Inter', sans-serif;
@@ -578,65 +578,91 @@ body.light-theme .slice-mid {
   100% { transform: translateX(-100%); opacity: 0; }
 }
 
-/* Theme Switcher */
+/* Theme Switcher FlowGlass Pro */
 .theme-switch-container {
   margin-top: 80px;
+  position: relative;
+  z-index: 50;
+  pointer-events: auto;
 }
 .theme-switch-btn {
   position: relative;
-  width: 80px;
-  height: 36px;
+  width: 100px;
+  height: 44px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.15s, background 0.3s;
 }
 .theme-switch-btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
+}
+.theme-switch-btn:active {
+  transform: scale(0.985);
 }
 body.light-theme .theme-switch-btn {
-  background: rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
+
 .ts-track {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  color: var(--text-main);
 }
-body.light-theme .ts-track {
-  color: #0F172A;
-}
+
 .ts-thumb {
   position: absolute;
-  top: 4px; left: 4px;
-  width: 26px; height: 26px;
+  top: 5px; left: 6px;
+  width: 32px; height: 32px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(255,255,255,0.3);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
   z-index: 10;
 }
 body.light-theme .ts-thumb {
-  transform: translateX(44px);
-  background: #0F172A;
-  box-shadow: 0 4px 12px rgba(15,23,42,0.3);
+  transform: translateX(54px);
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
 }
+
 .ts-sun, .ts-moon {
-  position: relative;
-  z-index: 5;
-  transition: opacity 0.3s, transform 0.4s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
 }
-.ts-sun { opacity: 0.5; transform: rotate(0deg); }
-.ts-moon { opacity: 1; transform: rotate(-12deg); }
-body.light-theme .ts-sun { opacity: 1; transform: rotate(12deg); }
-body.light-theme .ts-moon { opacity: 0.5; transform: rotate(0deg); }
+.ts-sun {
+  left: 14px;
+  color: #0F172A; /* dark icon so it shows against white thumb */
+  opacity: 0.45;
+  transform: translateY(-50%) rotate(0deg);
+}
+.ts-moon {
+  right: 14px;
+  color: #FFFFFF; /* light icon so it shows against dark background */
+  opacity: 1;
+  transform: translateY(-50%) rotate(-12deg);
+}
+
+/* When light theme is active, thumb moves to the right (over Moon) */
+body.light-theme .ts-sun {
+  color: #0F172A;
+  opacity: 1;
+  transform: translateY(-50%) rotate(12deg);
+}
+body.light-theme .ts-moon {
+  color: #FFFFFF;
+  opacity: 0.45;
+  transform: translateY(-50%) rotate(0deg);
+}
 
 /* ============================================================
    SHOP / CAROUSEL
