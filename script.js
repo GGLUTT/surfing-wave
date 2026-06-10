@@ -29,36 +29,8 @@
   });
 
   /* ============================================================
-     1. HEADER — scroll effect + hamburger
+     1. HEADER — REMOVED (Replaced by Glow Menu)
      ============================================================ */
-  const header = document.getElementById('site-header');
-  const hamburger = document.getElementById('hamburger');
-  const mainNav = document.getElementById('main-nav');
-
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 40) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  }, { passive: true });
-
-  if (hamburger && mainNav) {
-    hamburger.addEventListener('click', function () {
-      const isOpen = mainNav.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    // Close nav when a link is clicked
-    mainNav.querySelectorAll('.nav-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        mainNav.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
 
   /* ============================================================
      2. SCROLL REVEAL — IntersectionObserver
@@ -381,32 +353,40 @@
   });
 
   /* ============================================================
-     9. ACTIVE NAV LINK on scroll (Optimized)
+  /* ============================================================
+     9. GLOW MENU ACTIVE STATE & SCROLL
      ============================================================ */
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const glowItems = document.querySelectorAll('.gm-item');
 
-  if ('IntersectionObserver' in window) {
+  // Handle click on glow items
+  glowItems.forEach(item => {
+    item.addEventListener('click', function() {
+      glowItems.forEach(el => el.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  if ('IntersectionObserver' in window && sections.length > 0) {
     const navObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           const currentId = entry.target.getAttribute('id');
-          navLinks.forEach(function(link) {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
-            if (href === '#' + currentId || (currentId === 'hero' && href === '#')) {
-              link.classList.add('active');
+          glowItems.forEach(function(item) {
+            item.classList.remove('active');
+            const target = item.getAttribute('data-target');
+            if (target === currentId || (currentId === 'hero' && target === 'home')) {
+              item.classList.add('active');
             }
           });
         }
       });
-    }, { threshold: 0.2, rootMargin: '-100px 0px -100px 0px' });
+    }, { threshold: 0.3, rootMargin: '-100px 0px -100px 0px' });
 
     sections.forEach(function(section) {
       navObserver.observe(section);
     });
   }
-
   /* ============================================================
      10. WAVE DIVIDER ANIMATION — subtle horizontal movement
      ============================================================ */
