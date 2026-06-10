@@ -610,7 +610,9 @@ body.light-theme .slice-mid {
   display: inline-block;
   user-select: none;
   text-align: center;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.05em;
   font-size: clamp(32px, 6vw, 64px);
   color: var(--primary);
   opacity: 0;
