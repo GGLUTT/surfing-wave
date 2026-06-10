@@ -457,7 +457,7 @@
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
+    renderer.setPixelRatio(1); // Set to 1 to fix lag on high-res displays
     camera.position.z = 1.2;
 
     const vertexShader = `
@@ -501,7 +501,7 @@
       color2: { value: new THREE.Color("#4BDEDC") }
     };
 
-    const geometry = new THREE.PlaneGeometry(4, 4, 64, 64);
+    const geometry = new THREE.PlaneGeometry(4, 4, 16, 16); // Lowered geometry vertex count for performance
     const material = new THREE.ShaderMaterial({
       uniforms: uniforms,
       vertexShader: vertexShader,
