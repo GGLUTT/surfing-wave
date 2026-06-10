@@ -490,14 +490,14 @@
         color = mix(color, vec3(1.0), pow(abs(noise), 2.0) * intensity);
         float glow = 1.0 - length(uv - 0.5) * 2.0;
         glow = pow(glow, 2.0);
-        gl_FragColor = vec4(color * glow, glow * 0.3); // Reduced opacity slightly for better blending
+        gl_FragColor = vec4(color * glow, glow * 0.9); // Increased opacity so the waves are highly visible
       }
     `;
 
     const uniforms = {
       time: { value: 0 },
       intensity: { value: 1.0 },
-      color1: { value: new THREE.Color("#021D3C") },
+      color1: { value: new THREE.Color("#0B3358") }, // Lighter deep blue for better contrast
       color2: { value: new THREE.Color("#4BDEDC") }
     };
 
