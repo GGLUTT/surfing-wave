@@ -9,10 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-  <canvas id="bg-canvas"></canvas>
   <div class="custom-cursor" id="custom-cursor">
     <img src="img/surf2.png" alt="" />
   </div>
@@ -57,96 +55,35 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-bg-glow" aria-hidden="true"></div>
+    <!-- Background Layers -->
+    <div class="hero-bg-layer night-bg"></div>
+    <div class="hero-bg-layer light-bg"></div>
+    <div class="hero-bg-grid"></div>
 
-    <div class="container hero-grid">
-
-      <!-- Left -->
-      <div class="hero-content">
-        <p class="label-small hero-label">LIVE SALTY. STAY WILD.</p>
-        <h1 class="hero-h1">
-          CHASE<br>
-          <span class="hero-the">THE</span><br>
-          WAVE
-        </h1>
-        <p class="hero-desc">Premium gear. Epic waves.<br>Unforgettable experiences.</p>
-        <div class="hero-btns">
-          <a href="#community" class="btn btn-primary">Explore Experiences</a>
-          <a href="#shop" class="btn btn-secondary">Shop Boards</a>
-        </div>
-        <div class="hero-film">
-          <button class="play-btn" aria-label="Watch the film">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <polygon points="5,3 15,9 5,15" fill="#4BDEDC"/>
-            </svg>
-          </button>
-          <span class="label-small">Watch the film</span>
-        </div>
-        <div class="hero-avatars">
-          <div class="avatar-group" aria-hidden="true">
-            <img src="img/rev1.png" alt="Rider" class="avatar" />
-            <img src="img/rev2.png" alt="Rider" class="avatar" />
-            <img src="img/rev3.png" alt="Rider" class="avatar" />
-            <img src="img/rev4.png" alt="Rider" class="avatar" />
-          </div>
-          <span class="label-small">Join 12K+ wave seekers</span>
-        </div>
-
-
+    <div class="container hero-center-remake">
+      
+      <!-- Shutter Text -->
+      <div class="shutter-wrap" id="shutter-wrap">
+        <!-- JS populates characters -->
+        <span class="sr-only">IMMERSE</span>
       </div>
 
-      <!-- Center -->
-      <div class="hero-visual" id="hero-visual">
-        <img src="img/123.png" alt="Water splash effect" class="splash-img" aria-hidden="true" />
-        <div class="splash-ring" id="splash-ring" aria-hidden="true">
-          <div class="glow-circle"></div>
-          <div class="orbit-ring r1"></div>
-          <div class="orbit-ring r2"></div>
-          <div class="orbit-dots">
-            <span class="dot d1"></span>
-            <span class="dot d2"></span>
-            <span class="dot d3"></span>
-            <span class="dot d4"></span>
+      <!-- Theme Switcher -->
+      <div class="theme-switch-container">
+        <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle theme">
+          <div class="ts-track">
+            <div class="ts-thumb"></div>
+            <svg class="ts-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg class="ts-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </div>
-        </div>
-        <img src="img/main.png" alt="Tidal Nomad hero surfboard" class="hero-board" id="hero-board" />
+        </button>
       </div>
-
-      <!-- Right -->
-      <div class="hero-right">
-        <!-- <div class="conditions-card glass-card">
-          <div class="conditions-header">
-            <p class="label-small conditions-label">TODAY'S CONDITIONS</p>
-            <span class="conditions-quality">FAIR TO GOOD</span>
-          </div>
-          <div class="conditions-body">
-            <div class="conditions-main">
-              <span class="conditions-size">4&ndash;6 FT</span>
-              <div class="sparkline-wrap">
-                <svg class="cond-sparkline" viewBox="0 0 240 20" preserveAspectRatio="none">
-                  <path d="M0,10 Q15,0 30,10 T60,10 T90,10 T120,10 T150,10 T180,10 T210,10 T240,10" fill="none" stroke="#4BDEDC" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-            <div class="conditions-details">
-              <div class="cond-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v6M7 1L4 4M7 1l3 3" stroke="#4BDEDC" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="10" r="2" stroke="#4BDEDC" stroke-width="1.2"/></svg>
-                <span>Wind <strong>12 kts</strong></span>
-              </div>
-              <div class="cond-item">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2C5 2 3 4 3 6.5C3 9.5 5 12 7 12C9 12 11 9.5 11 6.5C11 4 9 2 7 2Z" stroke="#4BDEDC" stroke-width="1.2"/></svg>
-                <span>Water <strong>24&deg;C</strong></span>
-              </div>
-            </div> -->
-          </div>
-        </div>
-        <img src="img/1.png" alt="Surfer riding a wave" class="hero-surfer" id="hero-surfer" />
-      </div>
+      
     </div>
 
     <div class="wave-divider wave-divider-bottom" aria-hidden="true">
       <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#05213F"/>
+        <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="var(--bg-section)"/>
       </svg>
     </div>
   </section>
