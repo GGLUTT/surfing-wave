@@ -462,7 +462,7 @@
   // Shutter Text Logic
   const shutterWrap = document.getElementById('shutter-wrap');
   if (shutterWrap) {
-    const text = "IMMERSE";
+    const text = "SURFING";
     shutterWrap.innerHTML = '';
     
     text.split('').forEach((char, i) => {
