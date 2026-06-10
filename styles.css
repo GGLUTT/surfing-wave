@@ -82,15 +82,14 @@ a, button, .carousel-stage, .board-item, .play-btn {
   transform: rotate(-35deg);
   transform-origin: top left;
 }
-body::before {
-  content: '';
+#bg-canvas {
   position: fixed;
-  inset: -10%;
-  width: 120%; height: 120%;
-  background: url('img/bg.png') center/cover no-repeat;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: -2;
   pointer-events: none;
-  transform: translateZ(0);
 }
 body::after {
   content: '';
