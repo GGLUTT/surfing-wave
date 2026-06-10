@@ -47,13 +47,13 @@
 
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--bg-deep); }
 body {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: var(--text-muted);
-  background: var(--bg-deep);
+  background: transparent;
   overflow-x: hidden;
   cursor: none;
 }
@@ -88,8 +88,9 @@ a, button, .carousel-stage, .board-item, .play-btn {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -2;
+  z-index: -1;
   pointer-events: none;
+  transform: translateZ(0);
 }
 body::after {
   content: '';
