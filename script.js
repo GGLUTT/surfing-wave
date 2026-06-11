@@ -1,31 +1,23 @@
 /* ============================================================
-   TIDAL NOMAD — script.js
+   TIDAL NOMAD — script.js  (performance-optimised)
    ============================================================ */
 
 (function () {
   'use strict';
 
-  // --- CUSTOM CURSOR ---
-  const cursor = document.getElementById('custom-cursor');
-  if (cursor) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    }, { passive: true });
-    
-    document.querySelectorAll('a, button, .carousel-stage, .board-item, .play-btn').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-    });
-  }
-
-  // --- PRELOADER & HERO ANIMATION ---
-  window.addEventListener('load', () => {
+  /* ============================================================
+     PRELOADER → PAGE READY
+     ============================================================ */
+  window.addEventListener('load', function () {
     const preloader = document.getElementById('preloader');
-    setTimeout(() => {
+    // Wait for loader bar animation (~1.5s) then hide
+    setTimeout(function () {
       if (preloader) preloader.classList.add('loaded');
-      document.body.classList.add('loaded');
-    }, 600); // Minimum 600ms to show the loading animation
+      // Stagger: add page-ready slightly after fade starts
+      setTimeout(function () {
+        document.body.classList.add('page-ready');
+      }, 200);
+    }, 1500);
   });
 
   /* ============================================================
@@ -33,17 +25,16 @@
      ============================================================ */
   const burgerBtn = document.getElementById('mobile-burger-btn');
   const menuOverlay = document.getElementById('mobile-menu-overlay');
-  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
   if (burgerBtn && menuOverlay) {
-    burgerBtn.addEventListener('click', () => {
+    burgerBtn.addEventListener('click', function () {
       burgerBtn.classList.toggle('open');
       menuOverlay.classList.toggle('open');
       document.body.style.overflow = burgerBtn.classList.contains('open') ? 'hidden' : '';
     });
 
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
+    menuOverlay.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
         burgerBtn.classList.remove('open');
         menuOverlay.classList.remove('open');
         document.body.style.overflow = '';
@@ -54,133 +45,108 @@
   /* ============================================================
      2. SCROLL REVEAL — IntersectionObserver
      ============================================================ */
-  const revealEls = document.querySelectorAll('.reveal');
+  var revealEls = document.querySelectorAll('.reveal');
 
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
 
     revealEls.forEach(function (el, i) {
-      el.style.transitionDelay = (i % 4) * 0.1 + 's';
+      el.style.transitionDelay = (i % 4) * 0.08 + 's';
       revealObserver.observe(el);
     });
   } else {
-    // Fallback: show all
     revealEls.forEach(function (el) { el.classList.add('visible'); });
   }
 
   /* ============================================================
-     3. HERO PARALLAX — mouse move
+     3. GLOBAL rAF-THROTTLED SCROLL HANDLER
+        (single scroll listener for everything scroll-related)
      ============================================================ */
-  const heroBoard = document.getElementById('hero-board');
-  const heroSurfer = document.getElementById('hero-surfer');
-  const splashRing = document.getElementById('splash-ring');
-  let mouseX = 0, mouseY = 0;
-  let rafId = null;
+  var scrollRafPending = false;
+  var lastScrollY = window.scrollY;
 
-  function updateParallax() {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (mouseX - cx) / cx;
-    const dy = (mouseY - cy) / cy;
-
-    if (heroBoard) {
-      heroBoard.style.transform = 'translateX(' + dx * 8 + 'px) translateY(' + dy * 6 + 'px)';
+  function onScroll() {
+    lastScrollY = window.scrollY;
+    if (!scrollRafPending) {
+      scrollRafPending = true;
+      requestAnimationFrame(function () {
+        scrollRafPending = false;
+        handleServicesParallax();
+        handleNavHighlight();
+      });
     }
-    if (heroSurfer) {
-      heroSurfer.style.transform = 'translateX(' + dx * 14 + 'px) translateY(' + dy * 10 + 'px)';
-    }
-    if (splashRing) {
-      splashRing.style.transform = 'translate(calc(-50% + ' + dx * 5 + 'px), calc(-50% + ' + dy * 4 + 'px))';
-    }
-    rafId = null;
   }
 
-  document.addEventListener('mousemove', function (e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    if (!rafId) {
-      rafId = requestAnimationFrame(updateParallax);
-    }
-  }, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   /* ============================================================
      4. SURFBOARD CAROUSEL
      ============================================================ */
-  const boards = [
-    {
-      name: "TIDAL NOMAD 6'0\"",
-      tags: ['LONGBOARD', 'CRUISER'],
-      price: '$649',
-      img: '/assets/board-1.png'
-    },
-    {
-      name: "TIDAL NOMAD 6'2\"",
-      tags: ['ALL ROUND', 'BEGINNER'],
-      price: '$729',
-      img: '/assets/board-2.png'
-    },
-    {
-      name: "TIDAL NOMAD 6'2\"",
-      tags: ['ALL ROUND', 'PERFORMANCE'],
-      price: '$799',
-      img: '/assets/board-3.png'
-    },
-    {
-      name: "TIDAL NOMAD 6'4\"",
-      tags: ['DEEP WATER', 'ADVANCED'],
-      price: '$849',
-      img: '/assets/board-4.png'
-    },
-    {
-      name: "TIDAL NOMAD 5'10\"",
-      tags: ['SHORTBOARD', 'PERFORMANCE'],
-      price: '$879',
-      img: '/assets/board-5.png'
-    }
+  var boards = [
+    { name: "TIDAL NOMAD 6'0\"", tags: ['LONGBOARD', 'CRUISER'],      price: '$649' },
+    { name: "TIDAL NOMAD 6'2\"", tags: ['ALL ROUND', 'BEGINNER'],     price: '$729' },
+    { name: "TIDAL NOMAD 6'2\"", tags: ['ALL ROUND', 'PERFORMANCE'],  price: '$799' },
+    { name: "TIDAL NOMAD 6'4\"", tags: ['DEEP WATER', 'ADVANCED'],    price: '$849' },
+    { name: "TIDAL NOMAD 5'10\"", tags: ['SHORTBOARD', 'PERFORMANCE'], price: '$879' }
   ];
 
-  let activeIndex = 2; // center board
-  const totalBoards = boards.length;
+  var activeIndex = 2;
+  var totalBoards = boards.length;
+  var carouselAnimating = false;
 
-  const carouselStage = document.getElementById('carousel-stage');
-  const boardName = document.getElementById('board-name');
-  const boardPrice = document.getElementById('board-price');
-  const boardTagsEl = document.querySelector('.board-tags');
-  const prevBtn = document.getElementById('carousel-prev');
-  const nextBtn = document.getElementById('carousel-next');
-  const dotsContainer = document.getElementById('carousel-dots');
+  var carouselStage  = document.getElementById('carousel-stage');
+  var boardNameEl    = document.getElementById('board-name');
+  var boardPriceEl   = document.getElementById('board-price');
+  var boardTagsEl    = document.querySelector('.board-tags');
+  var prevBtn        = document.getElementById('carousel-prev');
+  var nextBtn        = document.getElementById('carousel-next');
+  var dotsContainer  = document.getElementById('carousel-dots');
+  var boardInfoEl    = document.getElementById('board-info');
 
-  function updateCarousel() {
-    const items = carouselStage ? carouselStage.querySelectorAll('.board-item') : [];
-    const dots = dotsContainer ? dotsContainer.querySelectorAll('.dot-btn') : [];
+  // Cache step once on first interaction (layout read happens anyway)
+  var cachedStep = 0;
+  function getStep() {
+    if (cachedStep) return cachedStep;
+    if (carouselStage) {
+      var items = carouselStage.querySelectorAll('.board-item');
+      if (items.length > 1) {
+        var r0 = items[0].getBoundingClientRect();
+        var r1 = items[1].getBoundingClientRect();
+        cachedStep = Math.abs(r1.left - r0.left) || 292;
+        return cachedStep;
+      }
+    }
+    return 292;
+  }
+  // Invalidate on resize
+  window.addEventListener('resize', function () { cachedStep = 0; }, { passive: true });
+
+  function updateCarousel(skipFade) {
+    if (!carouselStage) return;
+    var items = carouselStage.querySelectorAll('.board-item');
+    var dots  = dotsContainer ? dotsContainer.querySelectorAll('.dot-btn') : [];
 
     items.forEach(function (item, i) {
       item.classList.remove('active', 'adjacent');
-      const diff = Math.abs(i - activeIndex);
+      var diff = Math.abs(i - activeIndex);
       if (i === activeIndex) {
         item.classList.add('active');
-        // Move pedestal to active item
-        let pedestal = item.querySelector('.board-pedestal');
-        if (!pedestal) {
-          pedestal = document.createElement('div');
-          pedestal.className = 'board-pedestal';
-          pedestal.setAttribute('aria-hidden', 'true');
-          item.appendChild(pedestal);
+        if (!item.querySelector('.board-pedestal')) {
+          var ped = document.createElement('div');
+          ped.className = 'board-pedestal';
+          ped.setAttribute('aria-hidden', 'true');
+          item.appendChild(ped);
         }
       } else {
-        // Remove pedestal from non-active
-        const pedestal = item.querySelector('.board-pedestal');
-        if (pedestal) pedestal.remove();
+        var ped = item.querySelector('.board-pedestal');
+        if (ped) ped.remove();
         if (diff === 1) item.classList.add('adjacent');
       }
     });
@@ -189,42 +155,50 @@
       dot.classList.toggle('active', i === activeIndex);
     });
 
-    if (carouselStage) {
-      const itemsArr = Array.from(items);
-      const activeItem = itemsArr[activeIndex];
-      if (activeItem) {
-        // Calculate offset to center the active item (280px width + 20px gap = 300px step)
-        const centerIndex = 2; // Middle index of 5 items
-        const shift = (centerIndex - activeIndex) * 300; 
-        carouselStage.style.transform = `translateX(${shift}px)`;
-      }
-    }
+    var STEP = getStep();
+    var shift = (2 - activeIndex) * STEP;
+    carouselStage.style.transform = 'translateX(' + shift + 'px)';
 
-    // Update product info
-    const board = boards[activeIndex];
-    if (boardName) boardName.textContent = board.name;
-    if (boardPrice) boardPrice.textContent = board.price;
-    if (boardTagsEl) {
-      boardTagsEl.innerHTML = board.tags
-        .map(function (t) { return '<span class="tag">' + t + '</span>'; })
-        .join('');
+    // Board info fade
+    if (boardInfoEl && !skipFade) {
+      boardInfoEl.classList.add('switching');
+      setTimeout(function () {
+        setInfo();
+        boardInfoEl.classList.remove('switching');
+      }, 180);
+    } else {
+      setInfo();
     }
+  }
+
+  function setInfo() {
+    var b = boards[activeIndex];
+    if (boardNameEl)  boardNameEl.textContent = b.name;
+    if (boardPriceEl) boardPriceEl.textContent = b.price;
+    if (boardTagsEl)  boardTagsEl.innerHTML = b.tags.map(function (t) {
+      return '<span class="tag">' + t + '</span>';
+    }).join('');
   }
 
   function goNext() {
+    if (carouselAnimating) return;
+    carouselAnimating = true;
     activeIndex = (activeIndex + 1) % totalBoards;
     updateCarousel();
+    setTimeout(function () { carouselAnimating = false; }, 400);
   }
 
   function goPrev() {
+    if (carouselAnimating) return;
+    carouselAnimating = true;
     activeIndex = (activeIndex - 1 + totalBoards) % totalBoards;
     updateCarousel();
+    setTimeout(function () { carouselAnimating = false; }, 400);
   }
 
   if (prevBtn) prevBtn.addEventListener('click', goPrev);
   if (nextBtn) nextBtn.addEventListener('click', goNext);
 
-  // Dot navigation
   if (dotsContainer) {
     dotsContainer.querySelectorAll('.dot-btn').forEach(function (dot, i) {
       dot.addEventListener('click', function () {
@@ -234,50 +208,39 @@
     });
   }
 
-  // Board item click
   if (carouselStage) {
     carouselStage.querySelectorAll('.board-item').forEach(function (item, i) {
       item.addEventListener('click', function () {
-        activeIndex = i;
-        updateCarousel();
+        if (i !== activeIndex) { activeIndex = i; updateCarousel(); }
       });
-      item.style.cursor = 'pointer';
     });
-  }
 
-  // Touch/swipe support
-  let touchStartX = 0;
-  if (carouselStage) {
+    var touchStartX = 0;
     carouselStage.addEventListener('touchstart', function (e) {
       touchStartX = e.touches[0].clientX;
     }, { passive: true });
     carouselStage.addEventListener('touchend', function (e) {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        if (diff > 0) goNext(); else goPrev();
-      }
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) { diff > 0 ? goNext() : goPrev(); }
     }, { passive: true });
   }
 
-  // Keyboard support
   document.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight') goNext();
-    if (e.key === 'ArrowLeft') goPrev();
+    if (e.key === 'ArrowLeft')  goPrev();
   });
 
-  // Init
-  updateCarousel();
+  updateCarousel(true); // initial, no fade
 
   /* ============================================================
      5. TESTIMONIALS CAROUSEL (mobile)
      ============================================================ */
-  const testiGrid = document.getElementById('testimonials-grid');
-  const testiPrev = document.getElementById('testi-prev');
-  const testiNext = document.getElementById('testi-next');
-
-  let testiIndex = 0;
-  const testiCards = testiGrid ? Array.from(testiGrid.querySelectorAll('.testi-card')) : [];
-  const totalTesti = testiCards.length;
+  var testiGrid = document.getElementById('testimonials-grid');
+  var testiPrev = document.getElementById('testi-prev');
+  var testiNext = document.getElementById('testi-next');
+  var testiIndex = 0;
+  var testiCards = testiGrid ? Array.from(testiGrid.querySelectorAll('.testi-card')) : [];
+  var totalTesti = testiCards.length;
 
   function isMobile() { return window.innerWidth <= 768; }
 
@@ -291,36 +254,30 @@
     });
   }
 
-  if (testiPrev) {
-    testiPrev.addEventListener('click', function () {
-      testiIndex = (testiIndex - 1 + totalTesti) % totalTesti;
-      updateTesti();
-    });
-  }
-  if (testiNext) {
-    testiNext.addEventListener('click', function () {
-      testiIndex = (testiIndex + 1) % totalTesti;
-      updateTesti();
-    });
-  }
+  if (testiPrev) testiPrev.addEventListener('click', function () {
+    testiIndex = (testiIndex - 1 + totalTesti) % totalTesti; updateTesti();
+  });
+  if (testiNext) testiNext.addEventListener('click', function () {
+    testiIndex = (testiIndex + 1) % totalTesti; updateTesti();
+  });
 
   window.addEventListener('resize', updateTesti, { passive: true });
   updateTesti();
 
   /* ============================================================
-     6. BOOKING FORM — submit handler
+     6. BOOKING FORM
      ============================================================ */
-  const bookingForm = document.querySelector('.booking-form');
+  var bookingForm = document.querySelector('.booking-form');
   if (bookingForm) {
     bookingForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const btn = bookingForm.querySelector('button[type="submit"]');
-      const originalText = btn.textContent;
+      var btn = bookingForm.querySelector('button[type="submit"]');
+      var orig = btn.textContent;
       btn.textContent = 'Booking Sent!';
       btn.style.background = 'linear-gradient(135deg, #2E909D, #4BDEDC)';
       btn.disabled = true;
       setTimeout(function () {
-        btn.textContent = originalText;
+        btn.textContent = orig;
         btn.style.background = '';
         btn.disabled = false;
         bookingForm.reset();
@@ -329,271 +286,215 @@
   }
 
   /* ============================================================
-     7. NEWSLETTER FORM
-     ============================================================ */
-  const newsletterForm = document.querySelector('.newsletter-form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const input = newsletterForm.querySelector('input');
-      const btn = newsletterForm.querySelector('button');
-      if (input && input.value) {
-        btn.textContent = '✓';
-        btn.style.background = '#2E909D';
-        input.value = '';
-        setTimeout(function () {
-          btn.textContent = '→';
-          btn.style.background = '';
-        }, 2500);
-      }
-    });
-  }
-
-  /* ============================================================
-     8. SMOOTH SCROLL for anchor links
+     7. SMOOTH SCROLL
      ============================================================ */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      var target = document.querySelector(this.getAttribute('href'));
       if (target) {
         e.preventDefault();
-        const offset = 84; // header height
-        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        var top = target.getBoundingClientRect().top + window.scrollY - 84;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
     });
   });
 
   /* ============================================================
-  /* ============================================================
-     9. GLOW MENU ACTIVE STATE & SCROLL
+     8. GLOW MENU — nav highlight via IntersectionObserver
      ============================================================ */
-  const sections = document.querySelectorAll('section[id]');
-  const glowItems = document.querySelectorAll('.gm-item');
+  var sections  = document.querySelectorAll('section[id]');
+  var glowItems = document.querySelectorAll('.gm-item');
 
-  // Handle click on glow items
-  glowItems.forEach(item => {
-    item.addEventListener('click', function() {
-      glowItems.forEach(el => el.classList.remove('active'));
+  glowItems.forEach(function (item) {
+    item.addEventListener('click', function () {
+      glowItems.forEach(function (el) { el.classList.remove('active'); });
       this.classList.add('active');
     });
   });
 
-  if ('IntersectionObserver' in window && sections.length > 0) {
-    const navObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
+  function handleNavHighlight() {
+    // handled by IntersectionObserver below — no-op here
+  }
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          const currentId = entry.target.getAttribute('id');
-          glowItems.forEach(function(item) {
+          var id = entry.target.getAttribute('id');
+          glowItems.forEach(function (item) {
             item.classList.remove('active');
-            const target = item.getAttribute('data-target');
-            if (target === currentId || (currentId === 'hero' && target === 'home')) {
-              item.classList.add('active');
-            }
+            var t = item.getAttribute('data-target');
+            if (t === id || (id === 'hero' && t === 'home')) item.classList.add('active');
           });
         }
       });
     }, { threshold: 0.3, rootMargin: '-100px 0px -100px 0px' });
 
-    sections.forEach(function(section) {
-      navObserver.observe(section);
-    });
-  }
-  /* ============================================================
-     10. WAVE DIVIDER ANIMATION — subtle horizontal movement
-     ============================================================ */
-  const waveDividers = document.querySelectorAll('.wave-divider svg path');
-  let waveOffset = 0;
-
-  function animateWaves() {
-    waveOffset += 0.2;
-    waveDividers.forEach(function (path, i) {
-      const speed = (i % 2 === 0) ? 0.15 : -0.1;
-      const amplitude = 3;
-      const y = Math.sin((waveOffset + i * 30) * 0.02) * amplitude;
-      path.style.transform = 'translateY(' + y + 'px)';
-    });
-    requestAnimationFrame(animateWaves);
-  }
-
-  requestAnimationFrame(animateWaves);
-
-  /* ============================================================
-     11. STAGGERED REVEAL for service cards
-     ============================================================ */
-  const serviceCards = document.querySelectorAll('.service-card');
-  serviceCards.forEach(function (card, i) {
-    card.style.transitionDelay = (i * 0.08) + 's';
-  });
-
-  /* ============================================================
-     12. HERO BOARD — pause parallax during float animation
-         (reset transform on mouse leave)
-     ============================================================ */
-  const heroSection = document.getElementById('hero');
-  if (heroSection) {
-    heroSection.addEventListener('mouseleave', function () {
-      if (heroBoard) heroBoard.style.transform = '';
-      if (heroSurfer) heroSurfer.style.transform = '';
-      if (splashRing) splashRing.style.transform = 'translate(-50%, -50%)';
-    });
+    sections.forEach(function (s) { navObserver.observe(s); });
   }
 
   /* ============================================================
-     13. HERO SHUTTER TEXT & THEME SWITCH
+     9. THEME TOGGLE — rAF debounce
      ============================================================ */
-  
-  // Theme Toggle Logic
-  const themeToggle = document.getElementById('theme-toggle');
+  var themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light-theme');
+    var themePending = false;
+    themeToggle.addEventListener('click', function () {
+      if (themePending) return;
+      themePending = true;
+      requestAnimationFrame(function () {
+        document.body.classList.toggle('light-theme');
+        themePending = false;
+      });
     });
   }
 
-  // Shutter Text Logic
-  const shutterWrap = document.getElementById('shutter-wrap');
+  /* ============================================================
+     10. HERO SHUTTER TEXT (runs once)
+     ============================================================ */
+  var shutterWrap = document.getElementById('shutter-wrap');
   if (shutterWrap) {
-    const text = "SURFING";
-    shutterWrap.innerHTML = '';
-    
-    text.split('').forEach((char, i) => {
-      const charDiv = document.createElement('div');
+    var text = 'SURFING';
+    // Clear existing text node but keep sr-only span
+    Array.from(shutterWrap.childNodes).forEach(function (n) {
+      if (n.nodeType === 3 || (n.nodeType === 1 && !n.classList.contains('sr-only'))) {
+        shutterWrap.removeChild(n);
+      }
+    });
+
+    text.split('').forEach(function (char, i) {
+      var charDiv = document.createElement('div');
       charDiv.className = 'shutter-char';
-      
-      const mainSpan = document.createElement('span');
-      mainSpan.className = 'char-main';
-      mainSpan.textContent = char === ' ' ? '\u00A0' : char;
-      mainSpan.style.animationDelay = (i * 0.04 + 0.3) + 's';
-      
-      const slice1 = document.createElement('span');
-      slice1.className = 'char-slice slice-top';
-      slice1.textContent = char;
-      slice1.style.animationDelay = (i * 0.04) + 's';
-      
-      const slice2 = document.createElement('span');
-      slice2.className = 'char-slice slice-mid';
-      slice2.textContent = char;
-      slice2.style.animationDelay = (i * 0.04 + 0.1) + 's';
-      
-      const slice3 = document.createElement('span');
-      slice3.className = 'char-slice slice-bot';
-      slice3.textContent = char;
-      slice3.style.animationDelay = (i * 0.04 + 0.2) + 's';
-      
-      charDiv.appendChild(mainSpan);
-      charDiv.appendChild(slice1);
-      charDiv.appendChild(slice2);
-      charDiv.appendChild(slice3);
+
+      var main = document.createElement('span');
+      main.className = 'char-main';
+      main.textContent = char === ' ' ? '\u00A0' : char;
+      main.style.animationDelay = (i * 0.04 + 0.3) + 's';
+
+      var s1 = document.createElement('span');
+      s1.className = 'char-slice slice-top';
+      s1.textContent = char;
+      s1.style.animationDelay = (i * 0.04) + 's';
+
+      var s2 = document.createElement('span');
+      s2.className = 'char-slice slice-mid';
+      s2.textContent = char;
+      s2.style.animationDelay = (i * 0.04 + 0.1) + 's';
+
+      var s3 = document.createElement('span');
+      s3.className = 'char-slice slice-bot';
+      s3.textContent = char;
+      s3.style.animationDelay = (i * 0.04 + 0.2) + 's';
+
+      charDiv.appendChild(main);
+      charDiv.appendChild(s1);
+      charDiv.appendChild(s2);
+      charDiv.appendChild(s3);
       shutterWrap.appendChild(charDiv);
     });
   }
 
-  // Gooey Text Morphing Logic
-  const text1 = document.getElementById('gooey-text1');
-  const text2 = document.getElementById('gooey-text2');
-  
-  if (text1 && text2) {
-    const texts = ["IS", "NOT JUST", "A SPORT", "IT'S A", "LIFESTYLE"];
-    const morphTime = 1.2;
-    const cooldownTime = 0.5;
+  /* ============================================================
+     11. GOOEY TEXT MORPHING — uses performance.now(), not Date
+     ============================================================ */
+  var gText1 = document.getElementById('gooey-text1');
+  var gText2 = document.getElementById('gooey-text2');
 
-    let textIndex = texts.length - 1;
-    let time = new Date();
-    let morph = 0;
-    let cooldown = cooldownTime;
+  if (gText1 && gText2) {
+    var texts = ["IS", "NOT JUST", "A SPORT", "IT'S A", "LIFESTYLE"];
+    var MORPH_TIME    = 1.2;
+    var COOLDOWN_TIME = 0.5;
+    var textIndex = texts.length - 1;
+    var morph     = 0;
+    var cooldown  = COOLDOWN_TIME;
+    var lastTime  = performance.now();
 
-    text1.textContent = texts[textIndex % texts.length];
-    text2.textContent = texts[(textIndex + 1) % texts.length];
+    gText1.textContent = texts[textIndex % texts.length];
+    gText2.textContent = texts[(textIndex + 1) % texts.length];
 
-    function setMorph(fraction) {
-      text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-      text2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
-
-      fraction = 1 - fraction;
-      text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-      text1.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+    function setMorph(f) {
+      gText2.style.filter  = 'blur(' + Math.min(8 / f - 8, 100) + 'px)';
+      gText2.style.opacity = (Math.pow(f, 0.4) * 100) + '%';
+      f = 1 - f;
+      gText1.style.filter  = 'blur(' + Math.min(8 / f - 8, 100) + 'px)';
+      gText1.style.opacity = (Math.pow(f, 0.4) * 100) + '%';
     }
 
-    function doCooldown() {
-      morph = 0;
-      text2.style.filter = "";
-      text2.style.opacity = "100%";
-      text1.style.filter = "";
-      text1.style.opacity = "0%";
-    }
-
-    function doMorph() {
-      morph -= cooldown;
-      cooldown = 0;
-      let fraction = morph / morphTime;
-
-      if (fraction > 1) {
-        cooldown = cooldownTime;
-        fraction = 1;
-      }
-
-      setMorph(fraction);
-    }
-
-    function animateGooey() {
+    function animateGooey(now) {
       requestAnimationFrame(animateGooey);
-      let newTime = new Date();
-      let shouldIncrementIndex = cooldown > 0;
-      let dt = (newTime.getTime() - time.getTime()) / 1000;
-      time = newTime;
+      var dt = Math.min((now - lastTime) / 1000, 0.05); // cap dt to avoid jump on tab focus
+      lastTime = now;
 
+      var shouldIncrement = cooldown > 0;
       cooldown -= dt;
 
       if (cooldown <= 0) {
-        if (shouldIncrementIndex) {
+        if (shouldIncrement) {
           textIndex = (textIndex + 1) % texts.length;
-          text1.textContent = texts[textIndex % texts.length];
-          text2.textContent = texts[(textIndex + 1) % texts.length];
+          gText1.textContent = texts[textIndex % texts.length];
+          gText2.textContent = texts[(textIndex + 1) % texts.length];
         }
-        doMorph();
+        morph -= cooldown;
+        cooldown = 0;
+        var f = morph / MORPH_TIME;
+        if (f > 1) { cooldown = COOLDOWN_TIME; f = 1; }
+        setMorph(f);
       } else {
-        doCooldown();
+        morph = 0;
+        gText2.style.filter  = '';
+        gText2.style.opacity = '100%';
+        gText1.style.filter  = '';
+        gText1.style.opacity = '0%';
       }
     }
-    animateGooey();
+
+    requestAnimationFrame(animateGooey);
   }
 
   /* ============================================================
-     15. HERO PARALLAX SERVICES
+     12. SERVICES PARALLAX — throttled via global scroll rAF
      ============================================================ */
-  const servicesParallax = document.getElementById('services-parallax');
-  const parallaxStage = document.getElementById('parallax-stage');
-  const rowLefts = document.querySelectorAll('.row-left');
-  const rowRights = document.querySelectorAll('.row-right');
+  var servicesParallax = document.getElementById('services-parallax');
+  var parallaxStage    = document.getElementById('parallax-stage');
+  var rowLefts         = document.querySelectorAll('.row-left');
+  var rowRights        = document.querySelectorAll('.row-right');
 
-  if (servicesParallax && parallaxStage) {
-    window.addEventListener('scroll', () => {
-      const rect = servicesParallax.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      let progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
-      progress = Math.max(0, Math.min(1, progress)); 
+  function handleServicesParallax() {
+    if (!servicesParallax || !parallaxStage) return;
 
-      const translateY = -400 + (progress * 800);
-      let rotateX = 15 - (Math.min(progress / 0.3, 1) * 15);
-      let rotateZ = 20 - (Math.min(progress / 0.3, 1) * 20);
-      let opacity = 0.2 + (Math.min(progress / 0.3, 1) * 0.8);
+    var rect = servicesParallax.getBoundingClientRect();
+    var vh   = window.innerHeight;
+    var progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
 
-      parallaxStage.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg) translateY(${translateY}px)`;
-      parallaxStage.style.opacity = opacity;
+    var ty  = -400 + progress * 800;
+    var rx  = 15  - Math.min(progress / 0.3, 1) * 15;
+    var rz  = 20  - Math.min(progress / 0.3, 1) * 20;
+    var op  = 0.2 + Math.min(progress / 0.3, 1) * 0.8;
 
-      const translateXLeft = -300 + (progress * 600);
-      const translateXRight = 300 - (progress * 600);
+    parallaxStage.style.transform = 'rotateX(' + rx + 'deg) rotateZ(' + rz + 'deg) translateY(' + ty + 'px)';
+    parallaxStage.style.opacity   = op;
 
-      rowLefts.forEach(row => {
-        row.style.transform = `translateX(${translateXLeft}px)`;
+    var txL =  -300 + progress * 600;
+    var txR =   300 - progress * 600;
+    rowLefts.forEach(function (r)  { r.style.transform = 'translateX(' + txL + 'px)'; });
+    rowRights.forEach(function (r) { r.style.transform = 'translateX(' + txR + 'px)'; });
+  }
+
+  /* ============================================================
+     13. WAVE DIVIDER ANIMATION (runs only if elements exist)
+     ============================================================ */
+  var waveDividers = document.querySelectorAll('.wave-divider svg path');
+  if (waveDividers.length) {
+    var waveOffset = 0;
+    function animateWaves() {
+      waveOffset += 0.2;
+      waveDividers.forEach(function (path, i) {
+        var y = Math.sin((waveOffset + i * 30) * 0.02) * 3;
+        path.style.transform = 'translateY(' + y + 'px)';
       });
-      rowRights.forEach(row => {
-        row.style.transform = `translateX(${translateXRight}px)`;
-      });
-
-    }, { passive: true });
+      requestAnimationFrame(animateWaves);
+    }
+    requestAnimationFrame(animateWaves);
   }
 
 })();

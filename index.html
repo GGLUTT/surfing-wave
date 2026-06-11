@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <!-- Preload critical hero videos as posters -->
+  <link rel="preload" as="image" href="img/night.png" />
 </head>
 <body>
   <!-- SITE GRID PATTERN -->
@@ -24,14 +26,28 @@
   </div>
 
   <!-- PRELOADER -->
-  <div id="preloader">
-    <div class="preloader-bg preloader-bg-left"></div>
-    <div class="preloader-bg preloader-bg-right"></div>
-    <div class="loader-content">
-      <img src="img/logo.png" alt="Loading" class="loader-logo-new" />
-      <div class="loader-text-wrap">
-        <span class="loader-text-bg">TIDAL NOMAD</span>
-        <span class="loader-text-fill">TIDAL NOMAD</span>
+  <div id="preloader" aria-hidden="true">
+    <div class="loader-scene">
+      <!-- Animated label -->
+      <div class="loader-brand">
+        <span class="loader-brand-t" aria-hidden="true">T</span>
+        <span class="loader-brand-t" aria-hidden="true">I</span>
+        <span class="loader-brand-t" aria-hidden="true">D</span>
+        <span class="loader-brand-t" aria-hidden="true">A</span>
+        <span class="loader-brand-t" aria-hidden="true">L</span>
+      </div>
+      <p class="loader-sub">NOMAD</p>
+      <!-- SVG wave -->
+      <div class="loader-wave-wrap" aria-hidden="true">
+        <svg class="loader-wave" viewBox="0 0 400 60" preserveAspectRatio="none">
+          <path class="lw-path lw-back" d="M0,30 C80,5 160,55 240,30 C320,5 360,40 400,30 L400,60 L0,60 Z"/>
+          <path class="lw-path lw-mid"  d="M0,35 C60,15 140,55 220,35 C300,15 350,50 400,35 L400,60 L0,60 Z"/>
+          <path class="lw-path lw-front"d="M0,40 C70,20 150,60 230,40 C310,20 360,55 400,40 L400,60 L0,60 Z"/>
+        </svg>
+      </div>
+      <!-- Progress bar -->
+      <div class="loader-bar-wrap" aria-hidden="true">
+        <div class="loader-bar"></div>
       </div>
     </div>
   </div>
@@ -121,12 +137,12 @@
   <section class="hero" id="hero">
     <!-- Background Layers -->
     <div class="hero-bg-layer night-bg">
-      <video class="bg-video" autoplay loop muted playsinline poster="img/night.png">
+      <video class="bg-video" autoplay loop muted playsinline poster="img/night.png" preload="none">
         <source src="img/night.mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-bg-layer light-bg">
-      <video class="bg-video" autoplay loop muted playsinline poster="img/light.png">
+      <video class="bg-video" autoplay loop muted playsinline poster="img/light.png" preload="none">
         <source src="img/light.mp4" type="video/mp4">
       </video>
     </div>
@@ -135,13 +151,12 @@
     <div class="container hero-center-remake">
       
       <!-- Shutter Text -->
-      <div class="shutter-wrap" id="shutter-wrap">
-        <!-- JS populates characters -->
+      <div class="shutter-wrap hero-enter-1" id="shutter-wrap">
         <span class="sr-only">SURFING</span>
       </div>
 
       <!-- Gooey Text Morphing -->
-      <div class="gooey-container">
+      <div class="gooey-container hero-enter-2">
         <svg class="gooey-svg" aria-hidden="true" focusable="false">
           <defs>
             <filter id="threshold">
@@ -149,7 +164,6 @@
             </filter>
           </defs>
         </svg>
-
         <div class="gooey-texts" style="filter: url(#threshold);">
           <span id="gooey-text1" class="gooey-text"></span>
           <span id="gooey-text2" class="gooey-text"></span>
@@ -157,7 +171,7 @@
       </div>
 
       <!-- Theme Switcher -->
-      <div class="theme-switch-container">
+      <div class="theme-switch-container hero-enter-3">
         <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle theme">
           <div class="ts-track">
             <div class="ts-thumb"></div>
@@ -168,29 +182,31 @@
       </div>
       
     </div>
-
-
   </section>
 
   <!-- SHOP / CAROUSEL -->
   <section class="shop-section" id="shop">
-    <div class="container">
-      <div class="section-header reveal">
-        <p class="label-small accent-label">RIDE YOUR STORY</p>
-        <div class="animated-title-wrap">
-          <h2 class="animated-title-text">SURF <span class="text-primary">BOARDS</span></h2>
-          <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
-            <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
-          </svg>
-        </div>
-        <p style="max-width: 500px; margin: 0 auto; color: var(--text-muted); font-size: 16px;">Handcrafted performance.<br>Built for every wave, every rider.</p>
+    <!-- Header -->
+    <div class="shop-header reveal">
+      <p class="label-small accent-label">RIDE YOUR STORY</p>
+      <div class="animated-title-wrap">
+        <h2 class="animated-title-text">SURF <span class="text-primary">BOARDS</span></h2>
+        <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+          <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+        </svg>
       </div>
+      <p class="shop-subtitle">Handcrafted performance. Built for every wave, every rider.</p>
+    </div>
 
-      <div class="full-carousel-wrap reveal">
-        <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous board">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+    <!-- Full-width carousel area -->
+    <div class="shop-carousel-full">
+      <!-- Prev Button -->
+      <button class="shop-nav-btn shop-nav-prev" id="carousel-prev" aria-label="Previous board">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
 
+      <!-- Stage -->
+      <div class="carousel-track-wrap">
         <div class="carousel-stage" id="carousel-stage" aria-label="Surfboard carousel">
           <div class="board-item" data-index="0">
             <img src="img/surf1.png" alt="Tidal Nomad Ocean Swirl 6ft" loading="lazy" />
@@ -209,34 +225,35 @@
             <img src="img/surf5.png" alt="Tidal Nomad Foam Burst 5ft 10" loading="lazy" />
           </div>
         </div>
-
-        <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next board">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
       </div>
 
-      <div class="board-info reveal" id="board-info">
-        <h3 class="board-name" id="board-name">TIDAL NOMAD 6'2"</h3>
-        <div class="board-tags">
-          <span class="tag">ALL ROUND</span>
-          <span class="tag">PERFORMANCE</span>
-        </div>
-        <div class="board-price-row">
-          <span class="board-price" id="board-price">$799</span>
-          <button class="btn btn-primary">Add to Cart</button>
-        </div>
-      </div>
+      <!-- Next Button -->
+      <button class="shop-nav-btn shop-nav-next" id="carousel-next" aria-label="Next board">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
 
-      <div class="carousel-dots reveal" id="carousel-dots" aria-label="Carousel pagination">
-        <button class="dot-btn" aria-label="Board 1"></button>
-        <button class="dot-btn" aria-label="Board 2"></button>
-        <button class="dot-btn active" aria-label="Board 3"></button>
-        <button class="dot-btn" aria-label="Board 4"></button>
-        <button class="dot-btn" aria-label="Board 5"></button>
+    <!-- Board Info -->
+    <div class="board-info" id="board-info">
+      <h3 class="board-name" id="board-name">TIDAL NOMAD 6'2"</h3>
+      <div class="board-tags">
+        <span class="tag">ALL ROUND</span>
+        <span class="tag">PERFORMANCE</span>
+      </div>
+      <div class="board-price-row">
+        <span class="board-price" id="board-price">$799</span>
+        <button class="btn btn-primary">Add to Cart</button>
       </div>
     </div>
 
-
+    <!-- Dots -->
+    <div class="carousel-dots" id="carousel-dots" aria-label="Carousel pagination">
+      <button class="dot-btn" aria-label="Board 1"></button>
+      <button class="dot-btn" aria-label="Board 2"></button>
+      <button class="dot-btn active" aria-label="Board 3"></button>
+      <button class="dot-btn" aria-label="Board 4"></button>
+      <button class="dot-btn" aria-label="Board 5"></button>
+    </div>
   </section>
 
   <!-- SERVICES -->
