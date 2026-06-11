@@ -466,16 +466,18 @@
     var vh   = window.innerHeight;
     var progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
 
-    var ty  = -400 + progress * 800;
-    var rx  = 15  - Math.min(progress / 0.3, 1) * 15;
-    var rz  = 20  - Math.min(progress / 0.3, 1) * 20;
-    var op  = 0.2 + Math.min(progress / 0.3, 1) * 0.8;
+    // Slowed down Y movement
+    var ty  = -200 + progress * 400; 
+    var rx  = 10  - Math.min(progress / 0.3, 1) * 10;
+    var rz  = 10  - Math.min(progress / 0.3, 1) * 10;
+    var op  = 0.4 + Math.min(progress / 0.3, 1) * 0.6; // Keep opacity higher initially
 
     parallaxStage.style.transform = 'rotateX(' + rx + 'deg) rotateZ(' + rz + 'deg) translateY(' + ty + 'px)';
     parallaxStage.style.opacity   = op;
 
-    var txL =  -300 + progress * 600;
-    var txR =   300 - progress * 600;
+    // Slowed down X movement
+    var txL =  -150 + progress * 300;
+    var txR =   150 - progress * 300;
     rowLefts.forEach(function (r)  { r.style.transform = 'translateX(' + txL + 'px)'; });
     rowRights.forEach(function (r) { r.style.transform = 'translateX(' + txR + 'px)'; });
   }
