@@ -29,8 +29,27 @@
   });
 
   /* ============================================================
-     1. HEADER — REMOVED (Replaced by Glow Menu)
+     1. MOBILE MENU TOGGLE
      ============================================================ */
+  const burgerBtn = document.getElementById('mobile-burger-btn');
+  const menuOverlay = document.getElementById('mobile-menu-overlay');
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+  if (burgerBtn && menuOverlay) {
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('open');
+      menuOverlay.classList.toggle('open');
+      document.body.style.overflow = burgerBtn.classList.contains('open') ? 'hidden' : '';
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        burgerBtn.classList.remove('open');
+        menuOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
 
   /* ============================================================
      2. SCROLL REVEAL — IntersectionObserver
