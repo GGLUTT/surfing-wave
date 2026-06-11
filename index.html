@@ -11,7 +11,17 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
+  <!-- SITE GRID PATTERN -->
+  <div class="site-grid-pattern">
+    <svg aria-hidden="true" class="grid-svg">
+      <defs>
+        <pattern id="grid-pattern" width="60" height="60" patternUnits="userSpaceOnUse" x="-1" y="-1">
+          <path d="M.5 60V.5H60" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern)" />
+    </svg>
+  </div>
 
   <!-- PRELOADER -->
   <div id="preloader">
@@ -137,11 +147,7 @@
       
     </div>
 
-    <div class="wave-divider wave-divider-bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="var(--bg-section)"/>
-      </svg>
-    </div>
+
   </section>
 
   <!-- SHOP / CAROUSEL -->
@@ -149,7 +155,12 @@
     <div class="container shop-grid">
       <div class="shop-left reveal">
         <p class="label-small accent-label">RIDE YOUR STORY</p>
-        <h2 class="shop-heading">SURF<br><span class="text-primary">BOARDS</span></h2>
+        <div class="animated-title-wrap">
+          <h2 class="animated-title-text">SURF <span class="text-primary">BOARDS</span></h2>
+          <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+            <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+        </div>
         <p>Handcrafted performance.<br>Built for every wave, every rider.</p>
         <a href="#" class="btn btn-secondary btn-arrow">View All Boards</a>
       </div>
@@ -204,11 +215,7 @@
       <button class="dot-btn" aria-label="Board 5"></button>
     </div>
 
-    <div class="wave-divider wave-divider-bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,20 C360,70 720,0 1080,50 C1260,70 1380,30 1440,20 L1440,80 L0,80 Z" fill="#021D3C"/>
-      </svg>
-    </div>
+
   </section>
 
   <!-- SERVICES -->
@@ -216,83 +223,62 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="label-small accent-label">WHAT WE DO</p>
-        <h2>SERVICES</h2>
+        <div class="animated-title-wrap">
+          <h2 class="animated-title-text">SERVICES</h2>
+          <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+            <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+        </div>
       </div>
-      <div class="services-grid bento-grid">
-        <article class="service-card bento-card card-large reveal">
-          <img src="img/x1.png" alt="Surf Lessons" class="service-img" />
-          <div class="service-overlay">
-            <div class="service-icon">
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none"><path d="M10 3L3 10H6V17H14V10H17L10 3Z" stroke="#4BDEDC" stroke-width="1.5" fill="none"/></svg>
+      <div class="parallax-container" id="services-parallax">
+        <div class="parallax-stage" id="parallax-stage">
+          <div class="parallax-row row-left">
+            <div class="parallax-item">
+              <img src="img/x1.png" alt="Surf Lessons" />
+              <div class="parallax-overlay"><h3>Surf Lessons</h3></div>
             </div>
-            <div class="service-content">
-              <h3>Surf Lessons</h3>
-              <p>Learn the basics with certified instructors.</p>
-              <a href="#booking" class="service-link">Book Now &rarr;</a>
+            <div class="parallax-item">
+              <img src="img/x2.png" alt="Private Coaching" />
+              <div class="parallax-overlay"><h3>Private Coaching</h3></div>
             </div>
-          </div>
-        </article>
-
-        <article class="service-card bento-card reveal">
-          <img src="img/x2.png" alt="Private Coaching" class="service-img" />
-          <div class="service-overlay">
-            <div class="service-icon">
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#4BDEDC" stroke-width="1.5"/><path d="M4 17C4 14 6.5 12 10 12C13.5 12 16 14 16 17" stroke="#4BDEDC" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div class="service-content">
-              <h3>Private Coaching</h3>
-              <p>1-on-1 coaching to level up your surfing.</p>
+            <div class="parallax-item">
+              <img src="img/x3.png" alt="Board Rentals" />
+              <div class="parallax-overlay"><h3>Board Rentals</h3></div>
             </div>
           </div>
-        </article>
-
-        <article class="service-card bento-card reveal">
-          <img src="img/x3.png" alt="Board Rentals" class="service-img" />
-          <div class="service-overlay">
-            <div class="service-icon">
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="5" height="14" rx="2.5" stroke="#F6C56D" stroke-width="1.5"/><rect x="11" y="5" width="5" height="12" rx="2.5" stroke="#F6C56D" stroke-width="1.5"/></svg>
+          <div class="parallax-row row-right">
+            <div class="parallax-item">
+              <img src="img/x4.png" alt="Surf Trips" />
+              <div class="parallax-overlay"><h3>Surf Trips</h3></div>
             </div>
-            <div class="service-content">
-              <h3>Board Rentals</h3>
-              <p>Top quality boards, ready for your session.</p>
+            <div class="parallax-item">
+              <img src="img/x5.png" alt="Gear Care" />
+              <div class="parallax-overlay"><h3>Gear Care</h3></div>
             </div>
-          </div>
-        </article>
-
-        <article class="service-card bento-card card-wide reveal">
-          <img src="img/x4.png" alt="Surf Trips" class="service-img" />
-          <div class="service-overlay">
-            <div class="service-icon">
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none"><path d="M10 2C7 2 4 5 4 8.5C4 13 10 18 10 18C10 18 16 13 16 8.5C16 5 13 2 10 2Z" stroke="#4BDEDC" stroke-width="1.5"/><circle cx="10" cy="8.5" r="2" stroke="#4BDEDC" stroke-width="1.2"/></svg>
-            </div>
-            <div class="service-content">
-              <h3>Surf Trips</h3>
-              <p>Epic destinations, unforgettable memories. Join our guided tours.</p>
-              <a href="#booking" class="service-link">Explore Trips &rarr;</a>
+            <div class="parallax-item">
+              <img src="img/rev1.png" alt="Community" />
+              <div class="parallax-overlay"><h3>Community</h3></div>
             </div>
           </div>
-        </article>
-
-        <article class="service-card bento-card reveal">
-          <img src="img/x5.png" alt="Gear Care" class="service-img" />
-          <div class="service-overlay">
-            <div class="service-icon">
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none"><path d="M10 3L12 8H17L13 11L14.5 16L10 13L5.5 16L7 11L3 8H8L10 3Z" stroke="#F6C56D" stroke-width="1.5" fill="none"/></svg>
+          <div class="parallax-row row-left">
+            <div class="parallax-item">
+              <img src="img/rev2.png" alt="Events" />
+              <div class="parallax-overlay"><h3>Events</h3></div>
             </div>
-            <div class="service-content">
-              <h3>Gear Care</h3>
-              <p>Keep your gear in perfect condition.</p>
+            <div class="parallax-item">
+              <img src="img/rev3.png" alt="Competitions" />
+              <div class="parallax-overlay"><h3>Competitions</h3></div>
+            </div>
+            <div class="parallax-item">
+              <img src="img/sec.png" alt="Adventures" />
+              <div class="parallax-overlay"><h3>Adventures</h3></div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
     </div>
 
-    <div class="wave-divider wave-divider-bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,50 C300,10 600,70 900,30 C1100,10 1300,60 1440,40 L1440,80 L0,80 Z" fill="#05213F"/>
-      </svg>
-    </div>
+
   </section>
 
   <!-- TESTIMONIALS -->
@@ -300,7 +286,12 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="label-small accent-label">REAL WAVES. REAL PEOPLE.</p>
-        <h2>WHAT RIDERS SAY</h2>
+        <div class="animated-title-wrap">
+          <h2 class="animated-title-text">WHAT RIDERS SAY</h2>
+          <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+            <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+        </div>
       </div>
       <div class="testimonials-wrap">
         <button class="carousel-btn testi-prev" id="testi-prev" aria-label="Previous testimonial">
@@ -346,11 +337,7 @@
         </button>
       </div>
     </div>
-    <div class="wave-divider wave-divider-bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,30 C400,80 800,0 1200,50 C1320,65 1400,40 1440,30 L1440,80 L0,80 Z" fill="#082A4A"/>
-      </svg>
-    </div>
+
   </section>
 
   <!-- COMMUNITY -->
@@ -371,7 +358,12 @@
         </div>
         <div class="movement-content">
           <p class="label-small accent-label">MORE THAN SURFING</p>
-          <h2 class="movement-title">WE ARE<br>A MOVEMENT</h2>
+          <div class="animated-title-wrap" style="align-items: flex-start;">
+            <h2 class="animated-title-text movement-title">WE ARE<br>A MOVEMENT</h2>
+            <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+              <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+          </div>
           <p class="movement-desc">Tidal Nomad is a global surf community built on ocean respect, adventure, and freedom. We chase waves, explore hidden spots, and protect the very waters that give us life.</p>
           <div class="movement-stats">
             <div class="stat-item">
@@ -391,11 +383,7 @@
         </div>
       </div>
     </div>
-    <div class="wave-divider wave-divider-bottom" aria-hidden="true">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,40 C200,0 500,70 800,30 C1000,10 1200,60 1440,40 L1440,80 L0,80 Z" fill="#021D3C"/>
-      </svg>
-    </div>
+
   </section>
 
   <!-- BOOKING -->
@@ -403,7 +391,12 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="label-small accent-label">TODAY'S CONDITIONS</p>
-        <h2>READY TO<br>CATCH YOUR WAVE?</h2>
+        <div class="animated-title-wrap">
+          <h2 class="animated-title-text">READY TO<br>CATCH YOUR WAVE?</h2>
+          <svg width="100%" height="20" viewBox="0 0 300 20" class="animated-title-svg" preserveAspectRatio="none">
+            <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+        </div>
       </div>
       <div class="booking-grid">
         <div class="booking-left reveal">

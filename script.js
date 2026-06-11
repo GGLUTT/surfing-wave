@@ -547,4 +547,41 @@
     animateGooey();
   }
 
+  /* ============================================================
+     15. HERO PARALLAX SERVICES
+     ============================================================ */
+  const servicesParallax = document.getElementById('services-parallax');
+  const parallaxStage = document.getElementById('parallax-stage');
+  const rowLefts = document.querySelectorAll('.row-left');
+  const rowRights = document.querySelectorAll('.row-right');
+
+  if (servicesParallax && parallaxStage) {
+    window.addEventListener('scroll', () => {
+      const rect = servicesParallax.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      let progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+      progress = Math.max(0, Math.min(1, progress)); 
+
+      const translateY = -400 + (progress * 800);
+      let rotateX = 15 - (Math.min(progress / 0.3, 1) * 15);
+      let rotateZ = 20 - (Math.min(progress / 0.3, 1) * 20);
+      let opacity = 0.2 + (Math.min(progress / 0.3, 1) * 0.8);
+
+      parallaxStage.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg) translateY(${translateY}px)`;
+      parallaxStage.style.opacity = opacity;
+
+      const translateXLeft = -300 + (progress * 600);
+      const translateXRight = 300 - (progress * 600);
+
+      rowLefts.forEach(row => {
+        row.style.transform = `translateX(${translateXLeft}px)`;
+      });
+      rowRights.forEach(row => {
+        row.style.transform = `translateX(${translateXRight}px)`;
+      });
+
+    }, { passive: true });
+  }
+
 })();

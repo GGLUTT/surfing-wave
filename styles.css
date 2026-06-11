@@ -57,7 +57,36 @@ body {
   overflow-x: hidden;
 }
 
-
+/* ============================================================
+   GLOBAL GRID BACKGROUND
+   ============================================================ */
+.site-grid-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: -3; /* Behind everything but above html default bg if any */
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.15;
+  transition: opacity 0.5s, filter 0.5s;
+}
+.site-grid-pattern .grid-svg {
+  width: 100%;
+  height: 100%;
+  stroke: rgba(255, 255, 255, 1);
+  fill: rgba(255, 255, 255, 0.05);
+  mask-image: radial-gradient(circle at center, white 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, white 20%, transparent 80%);
+}
+body.light-theme {
+  background-color: #f4f8fa; /* Fallback for light mode underlying everything */
+}
+body.light-theme .site-grid-pattern {
+  opacity: 0.25;
+}
+body.light-theme .site-grid-pattern .grid-svg {
+  stroke: rgba(0, 0, 0, 1);
+  fill: rgba(0, 0, 0, 0.05);
+}
 
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -152,7 +181,7 @@ h1, .hero-h1 {
   display: inline-block;
   text-shadow: 0 10px 30px rgba(75,222,220,0.4);
 }
-h2 {
+h2, .animated-title-text {
   font-family: 'Permanent Marker', cursive;
   font-size: clamp(36px, 5vw, 64px);
   line-height: 1.2;
@@ -163,19 +192,43 @@ h2 {
   transform: rotate(-3deg);
   display: inline-block;
   position: relative;
-  margin-bottom: 24px;
   z-index: 1;
 }
-h2::after {
-  content: '';
+.animated-title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  width: fit-content;
+  margin: 0 auto 24px;
+}
+.animated-title-wrap[style*="align-items: flex-start"] {
+  margin-left: 0;
+}
+.animated-title-svg {
   position: absolute;
-  left: -5%; right: -5%; bottom: -4px;
-  height: 12px;
-  background: url("data:image/svg+xml;charset=UTF-8,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 12.5 0, 25 10 T 50 10 T 75 10 T 100 10' stroke='%234BDEDC' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
-  background-size: 30px 100%;
-  z-index: -1;
-  opacity: 0.8;
-  transform: rotate(1deg);
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  z-index: 0;
+  color: var(--primary);
+  overflow: visible;
+  transform: rotate(-3deg);
+}
+.animated-title-path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: drawLine 1.5s ease-in-out forwards;
+}
+.animated-title-wrap:hover .animated-title-path {
+  d: path("M 0,10 Q 75,20 150,10 Q 225,0 300,10");
+}
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
 }
 h3 {
   font-family: 'Bebas Neue', sans-serif;
@@ -712,7 +765,7 @@ body.light-theme .ts-moon {
    SHOP / CAROUSEL
    ============================================================ */
 .shop-section {
-  background: linear-gradient(180deg, var(--bg-deep) 0%, rgba(5,33,63,0.8) 50%, var(--bg-deep) 100%);
+  background: transparent;
   padding: 120px 0;
   position: relative;
   overflow: hidden;
@@ -866,7 +919,7 @@ body.light-theme .ts-moon {
    SERVICES
    ============================================================ */
 .services-section {
-  background: rgba(2, 29, 60, 0.95);
+  background: transparent;
   padding: 100px 0 120px;
   position: relative;
 }
@@ -876,107 +929,75 @@ body.light-theme .ts-moon {
 }
 .section-header h2 { margin-top: 8px; }
 
-.services-grid.bento-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: 280px;
-  gap: 24px;
-}
-.bento-card {
+/* ============================================================
+   SERVICES PARALLAX GRID
+   ============================================================ */
+.parallax-container {
+  height: 120vh;
   position: relative;
+  perspective: 1000px;
+  overflow: hidden;
+  margin-top: 40px;
+  width: 100%;
+}
+.parallax-stage {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.parallax-row {
+  display: flex;
+  gap: 40px;
+  width: 200%;
+}
+.parallax-item {
+  width: 400px;
+  height: 300px;
+  position: relative;
+  flex-shrink: 0;
   border-radius: 24px;
   overflow: hidden;
-  border: 1px solid rgba(75,222,220,0.1);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
 }
-.bento-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 40px rgba(75,222,220,0.15);
-  border-color: rgba(75,222,220,0.3);
+.parallax-item:hover {
+  transform: translateY(-20px);
 }
-.card-large {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.card-wide {
-  grid-column: span 2;
-}
-.service-img {
-  position: absolute;
-  inset: 0;
+.parallax-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.bento-card:hover .service-img {
-  transform: scale(1.05);
-}
-.service-overlay {
+.parallax-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(3,28,55,0.05) 0%, rgba(3,28,55,0.95) 100%);
+  background: rgba(0,0,0,0.5);
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 32px;
+  align-items: flex-end;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
   pointer-events: none;
 }
-.service-icon {
-  position: absolute;
-  top: 24px; right: 24px;
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: rgba(2, 29, 60, 0.6);
-  border: 1px solid rgba(75,222,220,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(2, 29, 60, 0.85);
+.parallax-item:hover .parallax-overlay {
+  opacity: 1;
 }
-.service-content {
-  pointer-events: auto;
+.parallax-overlay h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 24px;
 }
-.service-content h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px;
-  color: var(--text-main);
-  line-height: 1;
-  margin-bottom: 8px;
-  letter-spacing: 0.05em;
-}
-.service-content p {
-  font-size: 14px;
-  color: var(--text-soft);
-  max-width: 280px;
-  margin-bottom: 16px;
-}
-.card-large .service-content p, .card-wide .service-content p {
-  max-width: 400px;
-  font-size: 16px;
-}
-.service-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--primary);
-  text-decoration: none;
-  transition: gap var(--transition);
-}
-.service-link:hover {
-  gap: 12px;
-}
+
 
 /* ============================================================
    TESTIMONIALS
    ============================================================ */
 .testimonials-section {
-  background: var(--bg-section);
+  background: transparent;
   padding: 96px 0 110px;
   position: relative;
 }
