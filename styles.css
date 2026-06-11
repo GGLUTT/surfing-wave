@@ -45,6 +45,28 @@
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
+body.light-theme {
+  --bg-deep: #E0F2FE;
+  --bg-main: #F0F9FF;
+  --bg-section: #E0F2FE;
+  --bg-card: #FFFFFF;
+  --bg-card-soft: #F8FAFC;
+
+  --primary: #0EA5E9;
+  --primary-dark: #0284C7;
+  --secondary: #38BDF8;
+  --accent: #F59E0B;
+
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --text-soft: #64748B;
+  --text-dark: #FFFFFF;
+
+  --border-light: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --shadow-cyan: rgba(14, 165, 233, 0.2);
+}
+
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: transparent; }

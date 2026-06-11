@@ -174,8 +174,8 @@
 
   <!-- SHOP / CAROUSEL -->
   <section class="shop-section" id="shop">
-    <div class="container shop-grid">
-      <div class="shop-left reveal">
+    <div class="container">
+      <div class="section-header reveal">
         <p class="label-small accent-label">RIDE YOUR STORY</p>
         <div class="animated-title-wrap">
           <h2 class="animated-title-text">SURF <span class="text-primary">BOARDS</span></h2>
@@ -183,13 +183,12 @@
             <path class="animated-title-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" stroke="currentColor" stroke-width="2" fill="none" />
           </svg>
         </div>
-        <p>Handcrafted performance.<br>Built for every wave, every rider.</p>
-        <a href="#" class="btn btn-secondary btn-arrow">View All Boards</a>
+        <p style="max-width: 500px; margin: 0 auto; color: var(--text-muted); font-size: 16px;">Handcrafted performance.<br>Built for every wave, every rider.</p>
       </div>
 
-      <div class="shop-carousel-wrap">
+      <div class="full-carousel-wrap reveal">
         <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous board">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M13 4L7 10L13 16" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
 
         <div class="carousel-stage" id="carousel-stage" aria-label="Surfboard carousel">
@@ -212,29 +211,29 @@
         </div>
 
         <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next board">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 4L13 10L7 16" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
-    </div>
 
-    <div class="board-info" id="board-info">
-      <h3 class="board-name" id="board-name">TIDAL NOMAD 6'2"</h3>
-      <div class="board-tags">
-        <span class="tag">ALL ROUND</span>
-        <span class="tag">PERFORMANCE</span>
+      <div class="board-info reveal" id="board-info">
+        <h3 class="board-name" id="board-name">TIDAL NOMAD 6'2"</h3>
+        <div class="board-tags">
+          <span class="tag">ALL ROUND</span>
+          <span class="tag">PERFORMANCE</span>
+        </div>
+        <div class="board-price-row">
+          <span class="board-price" id="board-price">$799</span>
+          <button class="btn btn-primary">Add to Cart</button>
+        </div>
       </div>
-      <div class="board-price-row">
-        <span class="board-price" id="board-price">$799</span>
-        <button class="btn btn-primary">Add to Cart</button>
-      </div>
-    </div>
 
-    <div class="carousel-dots" id="carousel-dots" aria-label="Carousel pagination">
-      <button class="dot-btn" aria-label="Board 1"></button>
-      <button class="dot-btn" aria-label="Board 2"></button>
-      <button class="dot-btn active" aria-label="Board 3"></button>
-      <button class="dot-btn" aria-label="Board 4"></button>
-      <button class="dot-btn" aria-label="Board 5"></button>
+      <div class="carousel-dots reveal" id="carousel-dots" aria-label="Carousel pagination">
+        <button class="dot-btn" aria-label="Board 1"></button>
+        <button class="dot-btn" aria-label="Board 2"></button>
+        <button class="dot-btn active" aria-label="Board 3"></button>
+        <button class="dot-btn" aria-label="Board 4"></button>
+        <button class="dot-btn" aria-label="Board 5"></button>
+      </div>
     </div>
 
 

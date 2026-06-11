@@ -193,17 +193,10 @@
       const itemsArr = Array.from(items);
       const activeItem = itemsArr[activeIndex];
       if (activeItem) {
-        // Calculate offset to center the active item
-        const stageWidth = carouselStage.offsetWidth;
-        const activeItemRect = activeItem.getBoundingClientRect();
-        const stageRect = carouselStage.getBoundingClientRect();
-        
-        // This math assumes items have a fixed width and the container is larger
-        // For simplicity, we just use a percentage or fixed width offset based on index.
+        // Calculate offset to center the active item (280px width + 20px gap = 300px step)
         const centerIndex = 2; // Middle index of 5 items
-        const shift = (centerIndex - activeIndex) * 280; // 280px per item
+        const shift = (centerIndex - activeIndex) * 300; 
         carouselStage.style.transform = `translateX(${shift}px)`;
-        carouselStage.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
       }
     }
 
