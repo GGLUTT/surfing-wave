@@ -1206,12 +1206,12 @@ body.light-theme .shop-nav-btn {
 }
 
 /* ============================================================
-   SERVICES
+   SERVICES (BENTO GRID)
    ============================================================ */
-.services-section {
-  background: transparent;
-  padding: 100px 0 120px;
+.services-bento-section {
+  padding: 100px 0;
   position: relative;
+  z-index: 10;
 }
 .section-header {
   text-align: center;
@@ -1219,9 +1219,84 @@ body.light-theme .shop-nav-btn {
 }
 .section-header h2 { margin-top: 8px; }
 
+.services-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 280px;
+  gap: 24px;
+}
+.s-bento-item {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: flex-end;
+  padding: 32px;
+  text-decoration: none;
+  background: var(--bg-card);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+  cursor: pointer;
+}
+.s-bento-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px var(--shadow-cyan);
+}
+.item-1 { grid-column: span 2; grid-row: span 2; }
+.item-2 { grid-column: span 1; grid-row: span 1; }
+.item-3 { grid-column: span 1; grid-row: span 1; }
+.item-4 { grid-column: span 1; grid-row: span 1; }
+.item-5 { grid-column: span 2; grid-row: span 1; }
+
+.s-bento-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 0;
+}
+.s-bento-item:hover .s-bento-bg {
+  transform: scale(1.08);
+}
+.s-bento-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,17,39,0.9) 0%, rgba(0,17,39,0.3) 50%, transparent 100%);
+  z-index: 1;
+}
+.s-bento-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+.s-bento-content h3 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--primary);
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: color 0.3s;
+}
+.s-bento-item:hover .s-bento-content h3 {
+  color: #fff;
+}
+.s-bento-content p {
+  font-size: 16px;
+  opacity: 0.9;
+  line-height: 1.5;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
 /* ============================================================
-   SERVICES PARALLAX GRID
+   GALLERY (PARALLAX GRID)
    ============================================================ */
+.gallery-section {
+  background: transparent;
+  padding: 100px 0 120px;
+  position: relative;
+}
 .parallax-container {
   height: 120vh;
   position: relative;
@@ -1245,41 +1320,29 @@ body.light-theme .shop-nav-btn {
   width: 200%;
 }
 .parallax-item {
-  width: 400px;
-  height: 300px;
+  width: 500px;
+  height: 350px;
   position: relative;
   flex-shrink: 0;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  transition: transform 0.3s;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+  cursor: pointer;
 }
 .parallax-item:hover {
-  transform: translateY(-20px);
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 30px 60px var(--shadow-cyan);
+  z-index: 10;
 }
 .parallax-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.parallax-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: flex-end;
-  padding: 24px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-.parallax-item:hover .parallax-overlay {
-  opacity: 1;
-}
-.parallax-overlay h3 {
-  color: #fff;
-  margin: 0;
-  font-size: 24px;
+.parallax-item:hover img {
+  transform: scale(1.1);
 }
 
 
@@ -1694,13 +1757,16 @@ body.light-theme .shop-nav-btn {
 
   /* shop-grid no longer used — using full-width layout */
 
-  .services-section { padding: 90px 0 100px; }
-  .bento-grid {
+  .services-bento-section { padding: 90px 0 100px; }
+  .services-bento {
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: 240px;
   }
-  .card-large { grid-column: span 2; grid-row: span 1; }
-  .card-wide { grid-column: span 2; }
+  .item-1 { grid-column: span 2; grid-row: span 2; }
+  .item-2, .item-3, .item-4 { grid-column: span 1; grid-row: span 1; }
+  .item-5 { grid-column: span 2; grid-row: span 1; }
+
+  .gallery-section { padding: 90px 0 100px; }
 
   .testimonials-grid { grid-template-columns: 1fr; }
   .testimonials-wrap { flex-direction: column; }
@@ -1768,9 +1834,11 @@ body.light-theme .shop-nav-btn {
   .shop-nav-prev { left: 10px; }
   .shop-nav-next { right: 10px; }
 
-  .services-section { padding: 70px 0 80px; }
-  .bento-grid { grid-template-columns: 1fr; grid-auto-rows: 240px; }
-  .card-large, .card-wide { grid-column: span 1; }
+  .services-bento-section { padding: 70px 0 80px; }
+  .services-bento { grid-template-columns: 1fr; grid-auto-rows: 240px; }
+  .item-1, .item-2, .item-3, .item-4, .item-5 { grid-column: span 1; grid-row: span 1; }
+
+  .gallery-section { padding: 70px 0 80px; }
 
   .testimonials-section { padding: 70px 0 80px; }
   .testimonials-grid { grid-template-columns: 1fr; }
