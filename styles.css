@@ -47,7 +47,7 @@
 
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; background: var(--bg-deep); }
+html { scroll-behavior: smooth; background: transparent; }
 body {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -63,29 +63,38 @@ body {
 .site-grid-pattern {
   position: fixed;
   inset: 0;
-  z-index: -3; /* Behind everything but above html default bg if any */
+  z-index: -3;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.15;
-  transition: opacity 0.5s, filter 0.5s;
 }
+.site-grid-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-deep);
+  transition: background-color 0.5s;
+  z-index: -1;
+}
+body.light-theme .site-grid-pattern::before {
+  background-color: #f4f8fa;
+}
+
 .site-grid-pattern .grid-svg {
+  position: relative;
+  z-index: 0;
   width: 100%;
   height: 100%;
   stroke: rgba(255, 255, 255, 1);
   fill: rgba(255, 255, 255, 0.05);
   mask-image: radial-gradient(circle at center, white 20%, transparent 80%);
   -webkit-mask-image: radial-gradient(circle at center, white 20%, transparent 80%);
-}
-body.light-theme {
-  background-color: #f4f8fa; /* Fallback for light mode underlying everything */
-}
-body.light-theme .site-grid-pattern {
-  opacity: 0.25;
+  opacity: 0.15;
+  transition: opacity 0.5s, stroke 0.5s, fill 0.5s;
 }
 body.light-theme .site-grid-pattern .grid-svg {
   stroke: rgba(0, 0, 0, 1);
   fill: rgba(0, 0, 0, 0.05);
+  opacity: 0.25;
 }
 
 img { max-width: 100%; display: block; }
@@ -511,7 +520,7 @@ body.light-theme .gm-item:hover .gm-back {
   background-size: cover;
   background-position: center;
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: -2;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
@@ -541,7 +550,7 @@ body.light-theme .light-bg { opacity: 1; }
   background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
                     linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: clamp(20px, 5vw, 60px) clamp(20px, 5vw, 60px);
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
   transition: opacity 0.8s;
 }
@@ -672,7 +681,7 @@ body.light-theme .slice-mid {
   white-space: nowrap;
 }
 body.light-theme .gooey-text {
-  color: #2E909D;
+  color: #0F172A;
 }
 
 /* Theme Switcher FlowGlass Pro */
